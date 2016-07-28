@@ -1,9 +1,9 @@
 square<-c()
-for (i in 0:128)
+for (i in 0:64)
 {
-  for (j in 0:128)
+  for (j in 0:64)
   {
-    square<-rbind(square, c(i/16, j/16))
+    square<-rbind(square, c(i/8, j/8))
   }
 }
 
