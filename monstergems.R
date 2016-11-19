@@ -18,7 +18,7 @@ max(simul)
 sum(simul[simul==1])/10000
 
 #Baseball
-bsimul<-sapply(1:500000, FUN = function(i) max(rbinom(5,162,.5)))
+bsimul<-sapply(1:50000, FUN = function(i) max(rbinom(5,162,.5)))
 hist(bsimul)
 max(bsimul)
 min(bsimul)
