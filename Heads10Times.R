@@ -11,3 +11,4 @@ tots+totf
 totf-tots
 curve(dgeom(x, prob=heads), xlim=c(0,10000))
 dgeom(0, prob=heads)
+
