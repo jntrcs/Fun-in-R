@@ -1,3 +1,4 @@
+#computes the simulated probability of striking out when rolling for dice in the game "Can't stop"
 cantstop<-function(runners)
 {
   all<-rep(FALSE, 10000)
