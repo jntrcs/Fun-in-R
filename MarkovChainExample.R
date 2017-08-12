@@ -20,5 +20,18 @@ P<-matrix(c(0,0,0,0,0,1,1/2,0,0,0,0,1/6,1/3,1/4,0,0,1/3
             ,2/3,1/2,0,0,0,0,1/4,1), nrow=5)
 Q<-P[-5,-5]
 I<-diag(4)
-Expected<-solve(I-Q)
-sum(Expected[1,]) #Expected number of steps to go from state 1 to absorbing state 5
+N<-solve(I-Q)
+sum(N[1,]) #Expected number of steps to go from state 1 to absorbing state 5
+P
+R<-P[1:4,5] #Canonical Form
+N%*%R #probability that it is absorbed into state 5 from state i
+
+P5<-matrix(c(0,1,0,0,0,0,0,0,.4,.3,.3,0,0,0,0,0,
+             .4,.4,.2,0,0,0,0,.3,.3,.1,.3,0,0,0,0,0,.7,.3,
+             0,0,0,0,0,.2,.6,.2,0,0,0,0,0,0,1), 
+           byrow = T, nrow=7)
+N5<-solve(diag(6)-P5[-7,-7])
+
+P3<-matrix(c(0,1,0,0,2/3,1/3,0,0,1), byrow=T, nrow=3)
+N3<-solve(diag(2)-P3[-3,-3])
+N3
