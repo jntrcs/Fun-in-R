@@ -40,3 +40,7 @@ AbsMarkovEV(matrix(c(0,0,0,0,0,1,1/2,0,0,0,0,1/6,1/3,1/4,0,0,1/3
 #100% of my knowledge of Markov Chains comes from this really clear and fascinating chapter 
 # http://www.dartmouth.edu/~chance/teaching_aids/books_articles/probability_book/Chapter11.pdf
 #I hope to add more functions to compute other interesting properties such as "Probability of being at B given started at A after 3 steps"
+
+
+bathroom<-matrix(c(0,1/3,1/3,1/3,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,0,1/3,1/3,0,1/3,0), nrow=6, byrow=T)
+trans_states<-((bathroom%^%100+bathroom%^%101)/2)[1,]
