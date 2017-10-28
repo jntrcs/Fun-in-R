@@ -7,13 +7,11 @@ points(dbinom(0:134, 134,.5), col="red")
 
 weighted_coin<-function(p=.6, conf=.95){
   if (p>1 | p<.5){
-    print("p must be between .5 and 1")
-    return(NaN)
+    stop("p must be between .5 and 1")
   }
   if (conf>1|conf<0)
   {
-    print("conf must be between 0 and 1")
-    return(NaN)
+    stop("conf must be between 0 and 1")
   }
 #Your strategy: always guess the coin with higher heads. If tied just choose one
 flips<-0
@@ -30,3 +28,4 @@ print(paste(flips, probs))
 }
 
 }
+weighted_coin(p=.2)
