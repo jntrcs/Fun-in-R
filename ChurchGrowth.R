@@ -20,3 +20,16 @@ plot(ratio~world95$Year, main="Ratio of Mormons among World Population", xlab="Y
 
 #world$NetChange<-as.numeric(gsub(",","",world$NetChange))
 #plot(world$NetChange~world$Year)
+lds$Stakes<-as.numeric(gsub(",","",lds$Stakes))
+lds$Wards.and.Branches<-as.numeric(gsub(",","",lds$Wards.and.Branches))
+lds$Full.Time.Missionaries<-as.numeric(gsub(",","",lds$Full.Time.Missionaries))
+lds$Converts.Baptized<-as.numeric(gsub(",","",lds$Converts.Baptized))
+lds$New.Children.of.Record<-as.numeric(gsub(",","",lds$New.Children.of.Record))
+lds$Children.per.member<-lds$New.Children.of.Record/lds$Membership
+lds$Temples.per.member<-lds$Temples.in.Operation/lds$Membership
+
+ plot(lds$Membership/lds$Stakes)
+ plot(lds$Membership/lds$Wards.and.Branches)
+plot(lds$Converts.Baptized~lds$Full.Time.Missionaries)
+plot(lds$Children.per.member~lds$Year)
+plot(lds$Temples.per.member~lds$Year)
