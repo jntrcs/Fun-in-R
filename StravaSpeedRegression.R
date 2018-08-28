@@ -82,8 +82,7 @@ activities$day<-activities$day-min(activities$day)
 plot(activities$day)
 
 require(splines)
-mod<-lm(speed~distance+total_elevation_gain+poly(day, 3)+
-          distance:poly(day,3), data=activities)
+mod<-lm(speed~distance+total_elevation_gain+poly(day, 3), data=activities)
 summary(mod)
 plot(activities$speed~activities$day, ylab="Minutes per mile", xlab="Last three years", main="Speed over time", ylim=c(6,12))
 predFrame=data.frame(day=1:860, distance=mean(activities$distance), 
@@ -94,7 +93,7 @@ predFrame$preds<-predict(mod, newdata=predFrame)
 days<-1:860
 lines(predFrame$preds~days, col="blue")
 
-pdf("RunningFitness.pdf")
+#pdf("RunningFitness.pdf")
 ggplot(data=activities)+geom_point(aes(x=date, y=speed, size=distance))+
   geom_line(data=predFrame, aes(x=date, y=preds, color="Fitness Level"), size=2)+
   ylab("Minutes per mile") + xlab("Last 3 years")+
@@ -102,7 +101,7 @@ ggplot(data=activities)+geom_point(aes(x=date, y=speed, size=distance))+
   scale_size_continuous(name="Miles Ran")+
   scale_color_discrete(name=NULL)+
   ggtitle("Running Fitness over Time", subtitle = "Personal Strava data")
-dev.off()
+#dev.off()
 
 
 plot(mod)
