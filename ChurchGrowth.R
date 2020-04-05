@@ -1,35 +1,57 @@
-setwd("C:/Users/jntrcs/Google\ Drive/Data\ Sets")
-lds<-read.csv("ldsChurch.csv", stringsAsFactors = F)
-names(lds)[1]<-"Year"
-lds$Membership<-as.numeric(gsub(",","",lds$Membership))
-plot(y=lds$Membership, x=lds$Year)
-cor(lds$Membership, lds$Year)
-mod<-lm(lds$Membership~lds$Year)
-abline(mod)
-plot(mod$residuals)
+library(tidyverse)
+library(slider)
+library(patchwork)
+lds<-read_csv("ldschurch.csv")
+lds=lds %>% mutate(Members_per_ward=Membership/`Wards and Branches`,
+               Members_per_temple = Membership/`Temples in Operation`,
+               Children_Growth_Ratio = `New Children of Record`/
+                 (`New Children of Record`+`Converts Baptized`),
+               Yearly_Growth=Membership-lag(Membership),
+               Baptisms = `New Children of Record`+`Converts Baptized`) 
 
-world<-read.csv("worldPop.csv")
-world$Population<-as.numeric(gsub(",","",world$Population))
+ggplot(lds, aes(x=Year))+
+  geom_line(aes(y=Members_per_temple, color="Members_per_temple"))
+  
+ggplot(lds, aes(x=Year))+
+  geom_line(aes(y=Members_per_ward))+
+  ylab("Members per Church Unit")
 
-world95<-world[world$Year>=1995 & world$Year<=2016,]
-world95<-world95[order(world95$Year),]
-plot(world95$Population~world95$Year)
+p1=ggplot(lds, 
+       aes(x=Year,y=Yearly_Growth/10000))+
+  geom_col()+
+  geom_line()+
+  ylab("Yearly Membership Growth (10,000s)")+
+  theme_minimal()+scale_x_continuous(name=NULL)
 
-ratio<-(lds$Membership/world95$Population)*100
-plot(ratio~world95$Year, main="Ratio of Mormons among World Population", xlab="Year", ylab="% of Global Population", type="l")
+p2=ggplot(lds, aes(x=Year, y=Children_Growth_Ratio))+
+  geom_line()+geom_point()+
+  scale_y_continuous(labels=scales::label_percent(accuracy = 1))+
+  ylab("Children as a percentage of all baptisms")+
+  theme_minimal()
 
-#world$NetChange<-as.numeric(gsub(",","",world$NetChange))
-#plot(world$NetChange~world$Year)
-lds$Stakes<-as.numeric(gsub(",","",lds$Stakes))
-lds$Wards.and.Branches<-as.numeric(gsub(",","",lds$Wards.and.Branches))
-lds$Full.Time.Missionaries<-as.numeric(gsub(",","",lds$Full.Time.Missionaries))
-lds$Converts.Baptized<-as.numeric(gsub(",","",lds$Converts.Baptized))
-lds$New.Children.of.Record<-as.numeric(gsub(",","",lds$New.Children.of.Record))
-lds$Children.per.member<-lds$New.Children.of.Record/lds$Membership
-lds$Temples.per.member<-lds$Temples.in.Operation/lds$Membership
+p1/p2
 
- plot(lds$Membership/lds$Stakes)
- plot(lds$Membership/lds$Wards.and.Branches)
-plot(lds$Converts.Baptized~lds$Full.Time.Missionaries)
-plot(lds$Children.per.member~lds$Year)
-plot(lds$Temples.per.member~lds$Year)
+p3=ggplot(lds, aes(x=Year))+
+  geom_line(aes(y=`New Children of Record`/10000, color="Children"))+
+  geom_point(aes(y=`New Children of Record`/10000, color="Children"))+
+  geom_point(aes(y=`Converts Baptized`/10000, color="Converts"))+
+  geom_line(aes(y=`Converts Baptized`/10000, color="Converts"))+
+  ylab("Baptisms (10,000s)")+
+  theme_minimal()+
+  scale_color_discrete(name=NULL)
+
+p4=ggplot(lds%>%filter(Year!=1995), aes(x=Year))+
+  geom_line(size=3,aes(y=Baptisms/10000, color="Total Baptisms in Year"))+
+   geom_ribbon(aes(ymin=Baptisms/10000, ymax=Yearly_Growth/10000, 
+                   fill="Deaths or Members Lost"))+
+  #geom_point(aes(y=Yearly_Growth/10000))+
+  geom_area(aes(y=Yearly_Growth/10000, fill="Membership Growth"))+
+  theme_minimal()+
+  scale_color_discrete(direction=7, name=NULL)+
+  ylab("Membership (10,000s)")+
+  scale_fill_discrete(name=NULL)+
+  scale_x_continuous(name=NULL)
+
+
+((p1+p4))/((p2+p3))
+  
