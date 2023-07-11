@@ -31,7 +31,7 @@ scores = expand_grid(weight= seq(6.5, 9.5, by=1/16),
   mutate(weight_upper=weight+1/16, next_day=birthday+1,
          winner=if_else(ties, "Tie", winner))
 
-ggplot(guesses %>% filter(name!="Myra"), aes(x=due_date, y=weight,
+ggplot(guesses, aes(x=due_date, y=weight,
                                              label=name))+
   geom_rect(data=scores, aes(xmin=birthday, ymin=weight, fill=winner, 
                              xmax=next_day, ymax=weight_upper), 
@@ -52,7 +52,7 @@ ggplot(guesses %>% filter(name!="Myra"), aes(x=due_date, y=weight,
   theme(legend.position = "bottom")+
   scale_color_manual(values=c("#1eb6e1", "#f30cb4"))+
   guides(shape=guide_legend(NULL))+  
-  ggtitle("Guessing Game Win Chart", subtitle="If it's a boy")
+  ggtitle("Guessing Game Win Chart", subtitle="It's a boy!")
 
 
 scores = expand_grid(weight= seq(6.5, 9.5, by=1/16),
@@ -73,7 +73,7 @@ scores = expand_grid(weight= seq(6.5, 9.5, by=1/16),
   mutate(weight_upper=weight+1/16, next_day=birthday+1,
          winner=if_else(ties, "Tie", winner))
 
-ggplot(guesses %>% filter(name!="Myra"), aes(x=due_date, y=weight,
+ggplot(guesses, aes(x=due_date, y=weight,
                                              label=name))+
   geom_rect(data=scores, aes(xmin=birthday, ymin=weight, fill=winner, 
                              xmax=next_day, ymax=weight_upper), 
@@ -94,5 +94,5 @@ ggplot(guesses %>% filter(name!="Myra"), aes(x=due_date, y=weight,
   theme(legend.position = "bottom")+
   scale_color_manual(values=c("#1eb6e1", "#f30cb4"))+
   guides(shape=guide_legend(NULL))+  
-  ggtitle("Guessing Game Win Chart", subtitle="If it's a girl")
+  ggtitle("Guessing Game Win Chart", subtitle="If it was a girl")
 
